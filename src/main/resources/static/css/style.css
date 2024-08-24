@@ -1,0 +1,53 @@
+.gradient-background {
+  background: linear-gradient(300deg, #fed9b7, #00afb9, #f07167);
+  background-size: 180% 180%;
+  animation: gradient-animation 18s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  background-color: #fdfcdc;
+  display: grid;
+  grid-template-columns: 12% auto;
+  grid-template-rows: 80% auto; 
+}
+
+
+section#sidebar {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
+#sidebar > div {
+  height: 100%;
+}
+
+#features svg {
+  opacity: 100%;
+}
+
+.sidebar {
+  background-color: #fed9b7;
+}
