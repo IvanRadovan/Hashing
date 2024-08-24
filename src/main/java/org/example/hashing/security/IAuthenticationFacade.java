@@ -1,7 +1,7 @@
-package se.systementor.javasecstart.security;
+package org.example.hashing.security;
 
+import org.example.hashing.model.AppUser;
 import org.springframework.security.core.Authentication;
-import se.systementor.javasecstart.model.AppUser;
 
 import java.util.Optional;
 

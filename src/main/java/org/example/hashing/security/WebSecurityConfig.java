@@ -1,5 +1,6 @@
-package com.example.roombooking.security;
+package org.example.hashing.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,9 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
+        return new AppUserDetailsService();
     }
 
     @Bean
@@ -31,28 +35,28 @@ public class WebSecurityConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/login/**", "/logout", "/room/**", "/contractCustomer/**", "/event/**", "/password/**").permitAll()
+                        .requestMatchers("/", "/logout/**", "/login/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/templates/**").permitAll()
                         .anyRequest().authenticated())
-//                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/login/success", true)
                         .failureUrl("/login?error=true")
+//                        .failureHandler(customAuthenticationFailureHandler)
                         .permitAll())
                 .logout(logout -> {
                     logout.permitAll();
-                    logout.logoutSuccessUrl("/");
-                });
-
-        return http.build();
+                    logout.logoutSuccessUrl("/logout/success");
+                })
+                .build();
     }
+
 }

@@ -1,5 +1,6 @@
 package org.example.hashing.security;
 
+import org.example.hashing.model.AppUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,11 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ConcreteUserDetails implements UserDetails {
+public class AppUserDetails implements UserDetails {
 
     private final AppUser appUser;
 
-    public ConcreteUserDetails(AppUser appUser) {
+    public AppUserDetails(AppUser appUser) {
         this.appUser = appUser;
     }
 
@@ -50,6 +51,10 @@ public class ConcreteUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return appUser.isEnabled();
+    }
+
+    public String getProfilePicture() {
+        return appUser.getProfilePicture();
     }
 
 

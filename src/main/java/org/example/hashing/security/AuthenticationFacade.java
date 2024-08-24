@@ -1,11 +1,12 @@
-package se.systementor.javasecstart.security;
+package org.example.hashing.security;
 
+import com.github.javafaker.App;
+import org.example.hashing.model.AppUser;
+import org.example.hashing.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import se.systementor.javasecstart.model.AppUser;
-import se.systementor.javasecstart.services.AppUserService;
 
 import java.util.Optional;
 

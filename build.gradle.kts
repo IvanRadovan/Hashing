@@ -4,6 +4,12 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.3.3")
+    }
+}
+
 group = "org.example"
 version = "0.0.1-SNAPSHOT"
 
@@ -29,6 +35,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.github.javafaker:javafaker:1.0.2") { exclude ("org.yaml") }
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")

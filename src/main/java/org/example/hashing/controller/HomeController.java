@@ -1,10 +1,11 @@
-package se.systementor.javasecstart.controller;
+package org.example.hashing.controller;
 
+import org.example.hashing.security.IAuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import se.systementor.javasecstart.security.IAuthenticationFacade;
+
 
 @Controller
 public class HomeController {
@@ -15,9 +16,8 @@ public class HomeController {
     @GetMapping(path = "/")
     String empty(Model model) {
         authenticationFacade.loggedInUserProvider()
-                .ifPresent(appUser -> model.addAttribute("profileImage", appUser.getProfileImage()));
-        model.addAttribute("activeFunction", "home");
+                .ifPresent(appUser -> model.addAttribute("profileImage", appUser.getProfilePicture()));
 
-        return "home";
+        return "index.html";
     }
 }

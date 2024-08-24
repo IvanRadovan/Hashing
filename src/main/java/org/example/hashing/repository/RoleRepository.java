@@ -1,5 +1,6 @@
-package org.example.hashing.security;
+package org.example.hashing.repository;
 
+import org.example.hashing.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

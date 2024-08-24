@@ -1,13 +1,13 @@
-package se.systementor.javasecstart.services;
+package org.example.hashing.service;
 
+import org.example.hashing.model.AppUser;
+import org.example.hashing.repository.AppUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import se.systementor.javasecstart.model.AppUser;
-import se.systementor.javasecstart.model.AppUserRepository;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;

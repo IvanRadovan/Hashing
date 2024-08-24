@@ -1,4 +1,4 @@
-package org.example.hashing.security;
+package org.example.hashing.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
