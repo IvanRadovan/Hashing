@@ -28,23 +28,28 @@ public class SecurityController {
 
         return "login.html";
     }
+
+    @GetMapping("/login/success")
+    public String loginSuccessful(RedirectAttributes redirectAttributes) {
+        AppUser user = authenticationFacade.loggedInUserProvider()
+                .orElseThrow(() -> new UsernameNotFoundException("No Authorized user was found."));
+
+        // TODO: Add message but use div with th:if to render the message if someone is logged in
+//        redirectAttributes.addFlashAttribute("alertMessage", "Hello %s".formatted(user));
+
+        redirectAttributes.addFlashAttribute("user", user);
+
+        return "redirect:/";
+    }
+
 //
-//    @GetMapping("/login/success")
-//    public String loginSuccessful(RedirectAttributes redirectAttributes) {
-//        String username = authenticationFacade.loggedInUserProvider()
-//                .orElseThrow(() -> new UsernameNotFoundException("No Authorized user was found."))
-//                .getUsername();
-//        redirectAttributes.addFlashAttribute("alertMessage", "Välkommen %s".formatted(username));
-//
-//        return "redirect:/";
-//    }
-//
-//    @GetMapping("/logout/success")
-//    public String logout(RedirectAttributes redirectAttributes) {
-//        redirectAttributes.addFlashAttribute("alertMessage", "Du är nu utloggad!");
-//
-//        return "redirect:/";
-//    }
+    @GetMapping("/logout/success")
+    public String logout(RedirectAttributes redirectAttributes) {
+//        redirectAttributes.addFlashAttribute("alertMessage", "You have been logged out!");
+
+        return "redirect:/";
+    }
+
 //
 //    @GetMapping("/login/new-user")
 //    public String signUp(Model model, @ModelAttribute("errorMessage") String errorMessage) {
@@ -74,6 +79,8 @@ public class SecurityController {
 //            return "redirect:/login/new-user";
 //        }
 //    }
+
+
 }
 
 

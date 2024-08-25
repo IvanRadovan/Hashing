@@ -1,10 +1,12 @@
 package org.example.hashing.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.hashing.utility.FileSupplier;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -28,6 +30,8 @@ public class AppUser {
     private String password;
 
     private boolean enabled;
+
+    private String alias;
 
     private String profilePicture;
 

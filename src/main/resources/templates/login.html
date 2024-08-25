@@ -14,7 +14,7 @@
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form th:action="@{/}" th:object="${user}" method="post">
+    <form th:action="@{/login}" th:object="${user}" method="post">
         <h3>Login Here</h3>
         <label for="username">Username</label>
         <input type="text" placeholder="Email" id="username" th:field="*{username}">
@@ -24,7 +24,7 @@
 
         <button type="submit">Log In</button>
         <div class="social">
-            <div><i class="fab fa-github"></i> GitHub</div>
+            <div><a><i class="fab fa-github"></i></a> GitHub</div>
         </div>
     </form>
 </body>

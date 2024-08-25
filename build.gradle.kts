@@ -37,6 +37,7 @@ dependencies {
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("com.github.javafaker:javafaker:1.0.2") { exclude ("org.yaml") }
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

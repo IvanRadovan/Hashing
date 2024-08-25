@@ -53,9 +53,12 @@ public class AppUserDetails implements UserDetails {
         return appUser.isEnabled();
     }
 
+    public String getAlias() {
+        return appUser.getAlias();
+    }
+
     public String getProfilePicture() {
         return appUser.getProfilePicture();
     }
-
 
 }

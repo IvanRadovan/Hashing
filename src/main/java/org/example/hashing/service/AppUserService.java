@@ -41,6 +41,7 @@ public class AppUserService {
                 })
                 .orElseGet(() -> {
                     user.setPassword(passwordEncoder.encode(user.getPassword()));
+                    user.setEnabled(!user.getRoles().isEmpty());
                     appUserRepository.save(user);
                     LOGGER.info("User '{}' was added.", user.getUsername());
                     return true;

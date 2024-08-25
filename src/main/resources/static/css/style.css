@@ -1,7 +1,7 @@
 .gradient-background {
-  background: linear-gradient(300deg, #fed9b7, #00afb9, #f07167);
+  background: linear-gradient(300deg, #fed9b7, #00afb9, #e76f51);
   background-size: 180% 180%;
-  animation: gradient-animation 18s ease infinite;
+  animation: gradient-animation 15s ease infinite;
 }
 
 @keyframes gradient-animation {
@@ -49,5 +49,5 @@ section#sidebar {
 }
 
 .sidebar {
-  background-color: #fed9b7;
+  background: linear-gradient(300deg, #f8b876, #ffffff);
 }
