@@ -8,8 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -22,8 +21,15 @@ public class SecurityController {
     @Autowired
     private AppUserService userService;
 
-    @GetMapping("/login")
-    public String login(Model model) {
+    @RequestMapping("/login")
+    public String loginRegular(Model model) {
+        model.addAttribute("user", new AppUser());
+
+        return "login.html";
+    }
+
+    @RequestMapping("/login/oauth2")
+    public String loginGitHub(Model model) {
         model.addAttribute("user", new AppUser());
 
         return "login.html";

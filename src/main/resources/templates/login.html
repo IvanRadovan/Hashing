@@ -23,10 +23,14 @@
         <input type="password" placeholder="Password" id="password" th:field="*{password}">
 
         <button type="submit">Log In</button>
+
         <div class="social">
-            <div><a><i class="fab fa-github"></i></a> GitHub</div>
+            <div>
+                <a th:href="@{/oauth2/authorization/github}">
+                    <i class="fab fa-github"></i>
+                </a>GitHub
+            </div>
         </div>
     </form>
 </body>
-
 </html>
