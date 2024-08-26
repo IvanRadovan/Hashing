@@ -3,10 +3,12 @@ package org.example.hashing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import java.util.Objects;
 
 @SpringBootApplication
+@EnableWebSecurity
 public class HashingApplication {
 
     public static void main(String[] args) {
