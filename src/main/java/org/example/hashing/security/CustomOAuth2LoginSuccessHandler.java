@@ -27,6 +27,7 @@ public class CustomOAuth2LoginSuccessHandler extends SavedRequestAwareAuthentica
 
 //        appUserService.updateAuthenticationType(alias, oauth2ClientName);
 
+
         super.onAuthenticationSuccess(request, response, authentication);
     }
 

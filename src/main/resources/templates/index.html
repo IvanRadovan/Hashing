@@ -59,17 +59,13 @@
 <!--      TODO: Security issue with <img th:src=""> ?-->
       <div class="dropdown my-2">
         <a class="d-flex align-items-center link-body-emphasis text-decoration-none " data-bs-toggle="dropdown" aria-expanded="false">
-          <img th:src="${user != null ? user.profilePicture : blank}" alt="Profile picture" height="50" width="50"  class="rounded-circle me-3 ms-2" th>
-            <span th:switch="${user}">
-                <strong th:case="null">Account</strong>
-                <strong th:case="*" th:if="${user.alias != null}" th:text="${user.alias}"></strong>
-                <strong th:case="*" th:if="${user.alias == null}">User</strong>
-            </span>
+          <img th:src="${avatar != null ? avatar : blank}" alt="Profile picture" height="50" width="50"  class="rounded-circle me-3 ms-2" >
+                <strong th:text="${login != null ? login : 'Account'}"></strong>
         </a>
         <ul sec:authorize="!isAuthenticated()" class="dropdown-menu text-small shadow ms-3">
           <li><a class="dropdown-item" href="#">New Account</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" th:href="@{/login}">Sign in</a></li>
+          <li><a class="dropdown-item" th:href="@{/oauth2/authorization/github}">Sign in</a></li>
         </ul>
         <ul sec:authorize="isAuthenticated()" class="dropdown-menu text-small shadow ms-3">
           <li><a class="dropdown-item" href="#">Settings</a></li>
