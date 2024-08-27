@@ -17,7 +17,6 @@
 }
 
 html, body {
-  height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -28,10 +27,9 @@ html, body {
 body {
   background-color: #fdfcdc;
   display: grid;
-  grid-template-columns: 12% auto;
+  grid-template-columns: 13% auto;
   grid-template-rows: 80% auto; 
 }
-
 
 section#sidebar {
   grid-column-start: 1;
@@ -49,5 +47,5 @@ section#sidebar {
 }
 
 .sidebar {
-  background: linear-gradient(300deg, #f8b876, #ffffff);
+  background: linear-gradient(400deg, #ffa24b, #c9c9c9);
 }

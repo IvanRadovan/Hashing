@@ -1,13 +1,14 @@
 package org.example.hashing.controller;
 
 import org.example.hashing.configuration.IntegrationProperties;
+import org.example.hashing.model.HashData;
 import org.example.hashing.security.IAuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -30,8 +31,9 @@ public class HomeController {
 
             model.addAttribute("login", login);
             model.addAttribute("avatar", avatar);
+        } else {
+            model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
         }
-        model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
 
         return "index.html";
     }
@@ -40,4 +42,42 @@ public class HomeController {
     public Principal user(Principal principal) {
         return principal;
     }
+
+    @GetMapping("/hash")
+    public String showForm(Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
+        if (oauth2User != null) {
+            String login = oauth2User.getAttribute("login");
+            String avatar = oauth2User.getAttribute("avatar_url");
+
+            model.addAttribute("login", login);
+            model.addAttribute("avatar", avatar);
+        } else {
+            model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
+        }
+
+        model.addAttribute("hashData", new HashData());
+        return "hash.html";
+    }
+
+    @PostMapping("/hash")
+    public String processForm(@ModelAttribute HashData hashData, Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
+        if (oauth2User != null) {
+            String login = oauth2User.getAttribute("login");
+            String avatar = oauth2User.getAttribute("avatar_url");
+
+            model.addAttribute("login", login);
+            model.addAttribute("avatar", avatar);
+        } else {
+            model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
+        }
+
+        // Add result to model to be displayed in the view
+        model.addAttribute("md5", hashData.getMd5());
+        model.addAttribute("sha256", hashData.getSha256());
+
+        return "hash.html";
+    }
+
+
+
 }
