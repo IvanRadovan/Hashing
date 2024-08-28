@@ -13,7 +13,6 @@ import java.util.Map;
 public class GitHubOAuth2User implements OAuth2User {
 
     private OAuth2User oauth2User;
-    private String oauth2ClientName;
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -33,5 +32,11 @@ public class GitHubOAuth2User implements OAuth2User {
     public String getAvatarUrl() {
         return oauth2User.getAttribute("avatar_url");
     }
+
+    public String getProfileUrl() {
+        return oauth2User.getAttribute("html_url");
+    }
+
+
 
 }

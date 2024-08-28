@@ -40,11 +40,6 @@ public class HomeController {
         return "index.html";
     }
 
-    @RequestMapping(path = "/user")
-    public Principal user(Principal principal) {
-        return principal;
-    }
-
     @GetMapping("/hash")
     public String showForm(Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
         if (oauth2User != null) {

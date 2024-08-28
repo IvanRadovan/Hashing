@@ -1,5 +1,8 @@
 package org.example.hashing.security;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +29,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
+
+    @Autowired
+    private GitHubOAuth2UserService gitHubOAuth2UserService;
 
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -51,11 +58,20 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/hash", "/decrypt").permitAll()
+                        .requestMatchers("/", "/login", "/hash", "/decrypt", "/oauth2/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/templates/**").permitAll()
                         .anyRequest().authenticated())
-                .oauth2Login(Customizer.withDefaults())
-                .formLogin(withDefaults())
+                .formLogin(form -> form.loginPage("/login")
+                        .defaultSuccessUrl("/")
+                        .permitAll())
+                .oauth2Login(oAuth2LoginConfigurer -> {
+                    oAuth2LoginConfigurer.loginPage("/login");
+                    oAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(gitHubOAuth2UserService));
+                })
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll())
                 .build();
     }
 
