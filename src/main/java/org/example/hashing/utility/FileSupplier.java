@@ -53,9 +53,8 @@ public class FileSupplier {
         return lines;
     }
 
-    private static void writeToFile(String uri, List<String> lines) {
+    private static String writeToFile(String uri, List<String> lines) {
         var path = Paths.get(Objects.requireNonNull(uri));
-
 
         try (var writer = Files.newBufferedWriter(path)) {
             for (int i = 0; i < lines.size(); i++) {
@@ -64,22 +63,23 @@ public class FileSupplier {
                     writer.newLine();
                 }
             }
+            return path.toFile().getName();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void hashFileContent(String uri) {
+    public static String hashFileContent(String uri) {
         var lines = readFile(uri)
                 .stream()
                 .map(password -> new HashPassword(password).toString())
                 .toList();
 
-        writeToFile("hashed-passwords.txt", lines);
+        return writeToFile("hashed-passwords.txt", lines);
     }
 
 
-    public static void decryptPassword(String hash) {
+    public static String decryptPassword(String hash) {
         var lines = readFile("hashed-passwords.txt")
                 .stream()
                 .map(line -> new HashPassword(line.substring(0, line.indexOf(":"))))
@@ -88,9 +88,9 @@ public class FileSupplier {
 
         var index = Collections.binarySearch(lines, new HashPassword().setMD5(hash));
         if (index < 0) {
-            throw new RuntimeException("Invalid password: " + hash);
+            return "No match";
         }
-        System.out.println(lines.get(index).getRaw());
+        return lines.get(index).getRaw();
     }
 
 }
