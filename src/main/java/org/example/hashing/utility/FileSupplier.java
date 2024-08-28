@@ -1,6 +1,7 @@
 package org.example.hashing.utility;
 
 import lombok.AllArgsConstructor;
+import org.example.hashing.model.HashPassword;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,9 +11,10 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
+
+import static java.nio.file.Files.newBufferedReader;
 
 @AllArgsConstructor
 public class FileSupplier {
@@ -33,4 +35,62 @@ public class FileSupplier {
             return Optional.empty();
         }
     }
+
+    private static List<String> readFile(String uri) {
+
+        var path = Paths.get(Objects.requireNonNull(uri));
+
+        if (!Files.exists(path))
+            throw new RuntimeException("File not found: " + uri);
+
+        List<String> lines;
+        try (var reader = newBufferedReader(path)) {
+            lines = reader.lines().toList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return lines;
+    }
+
+    private static void writeToFile(String uri, List<String> lines) {
+        var path = Paths.get(Objects.requireNonNull(uri));
+
+
+        try (var writer = Files.newBufferedWriter(path)) {
+            for (int i = 0; i < lines.size(); i++) {
+                writer.write(lines.get(i));
+                if (i < lines.size() - 1) {
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void hashFileContent(String uri) {
+        var lines = readFile(uri)
+                .stream()
+                .map(password -> new HashPassword(password).toString())
+                .toList();
+
+        writeToFile("hashed-passwords.txt", lines);
+    }
+
+
+    public static void decryptPassword(String hash) {
+        var lines = readFile("hashed-passwords.txt")
+                .stream()
+                .map(line -> new HashPassword(line.substring(0, line.indexOf(":"))))
+                .sorted()
+                .toList();
+
+        var index = Collections.binarySearch(lines, new HashPassword().setMD5(hash));
+        if (index < 0) {
+            throw new RuntimeException("Invalid password: " + hash);
+        }
+        System.out.println(lines.get(index).getRaw());
+    }
+
 }

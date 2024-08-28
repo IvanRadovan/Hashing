@@ -1,7 +1,7 @@
 package org.example.hashing.controller;
 
 import org.example.hashing.configuration.IntegrationProperties;
-import org.example.hashing.model.HashData;
+import org.example.hashing.model.HashPassword;
 import org.example.hashing.security.IAuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,12 +55,12 @@ public class HomeController {
             model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
         }
 
-        model.addAttribute("hashData", new HashData());
+        model.addAttribute("hashPassword", new HashPassword());
         return "hash.html";
     }
 
     @PostMapping("/hash")
-    public String processForm(@ModelAttribute HashData hashData, Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
+    public String processForm(@ModelAttribute HashPassword hashPassword, Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
         if (oauth2User != null) {
             String login = oauth2User.getAttribute("login");
             String avatar = oauth2User.getAttribute("avatar_url");
@@ -72,8 +72,8 @@ public class HomeController {
         }
 
         // Add result to model to be displayed in the view
-        model.addAttribute("md5", hashData.getMd5());
-        model.addAttribute("sha256", hashData.getSha256());
+        model.addAttribute("md5", hashPassword.getMd5());
+        model.addAttribute("sha256", hashPassword.getSha256());
 
         return "hash.html";
     }
