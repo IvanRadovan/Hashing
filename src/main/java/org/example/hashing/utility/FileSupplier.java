@@ -87,10 +87,8 @@ public class FileSupplier {
                 .toList();
 
         var index = Collections.binarySearch(lines, new HashPassword().setMD5(hash));
-        if (index < 0) {
-            return "No match";
-        }
-        return lines.get(index).getRaw();
+
+        return (index < 0) ? "No Match Found" :  lines.get(index).getPlain();
     }
 
 }
