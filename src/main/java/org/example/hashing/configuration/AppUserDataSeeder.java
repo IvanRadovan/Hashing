@@ -42,10 +42,6 @@ public class AppUserDataSeeder {
         String password = integrationProperties.getUserData().getPassword();
         String alias = integrationProperties.getUserData().getAlias();
         String profilePictureFilePath = integrationProperties.getUserData().getDefaultProfile();
-        String defaultProfilePicture = getFile(profilePictureFilePath)
-                .orElseThrow(NoSuchFieldError::new)
-                .toFile()
-                .getName();
 
         List<Role> roles = new ArrayList<>();
         Role role = roleRepository.findByName(roleName)
@@ -59,7 +55,7 @@ public class AppUserDataSeeder {
                 .password(hash)
                 .roles(roles)
                 .alias(alias)
-                .profilePicture(defaultProfilePicture)
+                .profilePicture(profilePictureFilePath)
                 .enabled(true)
                 .build();
         appUserRepository.save(appUser);

@@ -99,7 +99,7 @@ public class HomeController {
             model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
         }
 
-        model.addAttribute("password",   FileSupplier.decryptHash(input, "password/passwords.txt"));
+        model.addAttribute("password",   FileSupplier.decryptHash(input, "data/hashed-passwords.txt"));
 
         return "decrypt.html";
     }

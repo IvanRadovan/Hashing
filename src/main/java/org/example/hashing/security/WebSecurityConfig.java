@@ -54,17 +54,17 @@ public class WebSecurityConfig {
                         .requestMatchers("/", "/login", "/hash", "/decrypt", "/oauth2/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/templates/**").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/login")
-                        .defaultSuccessUrl("/")
-                        .permitAll())
+//                .formLogin(form -> form.loginPage("/login")
+//                        .defaultSuccessUrl("/")
+//                        .permitAll())
                 .oauth2Login(oAuth2LoginConfigurer -> {
                     oAuth2LoginConfigurer.loginPage("/login");
                     oAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(gitHubOAuth2UserService));
                 })
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll())
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/")
+//                        .permitAll())
                 .build();
     }
 
