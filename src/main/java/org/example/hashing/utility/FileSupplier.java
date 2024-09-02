@@ -11,7 +11,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.nio.file.Files.newBufferedReader;
@@ -21,7 +25,7 @@ public class FileSupplier {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileSupplier.class);
 
-    public static Optional<String> getFile(String dirPath, String fileName) {
+    public static Optional<Path> getFile(String fileName, String dirPath) {
         URL resource = FileSupplier.class.getClassLoader().getResource(dirPath);
 
         try (Stream<Path> stream = Files.list(Paths.get(Objects.requireNonNull(resource).toURI()))) {
@@ -29,58 +33,80 @@ public class FileSupplier {
                     .filter(file -> !Files.isDirectory(file))
                     .filter(file -> file.toFile().getName().equals(fileName))
                     .findFirst()
-                    .map(file -> file.getFileName().toString());
+                    .map(file -> Path.of(file.getFileName().toString()));
         } catch (IOException | URISyntaxException e) {
-            LOG.error("Error while accessing the file: {}", fileName, e);
+            LOG.error("Error while accessing the file '{}': {}.", fileName,e.getMessage());
             return Optional.empty();
         }
     }
 
-    private static List<String> readFile(String uri) {
+    public static List<String> readFile(String fileName, String dirPaths) {
+        var path = getFile(fileName, dirPaths);
 
-        var path = Paths.get(Objects.requireNonNull(uri));
-
-        if (!Files.exists(path))
-            throw new RuntimeException("File not found: " + uri);
-
-        List<String> lines;
-        try (var reader = newBufferedReader(path)) {
-            lines = reader.lines().toList();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (path.isEmpty()) {
+            LOG.error("Cannot read for an nonexistent file '{}'.", fileName);
+            return Collections.emptyList();
         }
 
-        return lines;
+        try (var reader = newBufferedReader(path.get())) {
+            return reader.lines().toList();
+        } catch (IOException e) {
+            LOG.error("Error while reading from file '{}': {}.", path, e.getMessage());
+        }
+        return Collections.emptyList();
     }
 
-    private static String writeToFile(String uri, List<String> lines) {
-        var path = Paths.get(Objects.requireNonNull(uri));
+    public static Optional<Path> writeToFile(String uri, List<String> lines, String... dirPaths) {
+        var path = createFileInDir(uri, dirPaths);
 
-        try (var writer = Files.newBufferedWriter(path)) {
-            for (int i = 0; i < lines.size(); i++) {
-                writer.write(lines.get(i));
-                if (i < lines.size() - 1) {
-                    writer.newLine();
-                }
+        // Create the file at root level if no dir is specified
+        path = path.or(() -> Optional.of(Paths.get(uri)));
+
+        try (var writer = Files.newBufferedWriter(path.get())) {
+            String content = lines.stream().collect(Collectors.joining(System.lineSeparator()));
+            writer.write(content);
+            LOG.info("Successfully wrote to file '{}'.", path);
+            return path;
+        } catch (IOException e) {
+            LOG.error("Error while writing to file: '{}': {}.", path, e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    private static Optional<Path> createFileInDir(String fileName, String... dirPaths) {
+        String projectRoot = System.getProperty("user.dir");
+        Path relativeDir = Paths.get(projectRoot, dirPaths);
+        Path filePath = relativeDir.resolve(fileName);
+
+        try {
+            if (!Files.exists(relativeDir)) {
+                Files.createDirectories(relativeDir);
+                LOG.info("Directory {} created successfully.", relativeDir);
             }
-            return path.toFile().getName();
+
+            Files.createFile(filePath);
+            return Optional.of(filePath);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOG.error("Error while creating file '{}' to directory '{}': {}.", fileName, relativeDir, e.getMessage());
+            return Optional.empty();
         }
     }
 
-    public static String hashFileContent(String uri) {
-        var lines = readFile(uri)
+
+
+
+    public static Optional<Path> hashFileContent(String fileToRead, String toReadDirPath, String newFile, String... dirPaths) {
+        var lines = readFile(fileToRead, toReadDirPath)
                 .stream()
                 .map(password -> new HashPassword(password).toString())
                 .toList();
 
-        return writeToFile("hashed-passwords.txt", lines);
+        return writeToFile("hashed-passwords.txt", lines, dirPaths);
     }
 
 
-    public static String decryptPassword(String hash) {
-        var lines = readFile("hashed-passwords.txt")
+    public static String decryptHash(String hash) {
+        var lines = readFile("hashed-passwords.txt", "/password/")
                 .stream()
                 .map(line -> new HashPassword(line.substring(0, line.indexOf(":"))))
                 .sorted()
@@ -88,7 +114,7 @@ public class FileSupplier {
 
         var index = Collections.binarySearch(lines, new HashPassword().setMD5(hash));
 
-        return (index < 0) ? "No Match Found" :  lines.get(index).getPlain();
+        return (index < 0) ? "No Match Found" : lines.get(index).getPlain();
     }
 
 }
