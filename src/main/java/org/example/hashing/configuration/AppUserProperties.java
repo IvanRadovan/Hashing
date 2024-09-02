@@ -15,8 +15,6 @@ public class AppUserProperties  {
     private String password;
     private String role;
     private String alias;
-    private String profileDir;
-    private String relativeProfileDir;
     private String defaultProfile;
     private String blankProfile;
 

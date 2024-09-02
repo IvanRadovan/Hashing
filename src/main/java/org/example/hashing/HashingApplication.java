@@ -34,9 +34,9 @@ public class HashingApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        LOG.info("CommandLineRunner: Executing.");
-        var fileName = FileSupplier.hashFileContent("passwords.txt");
-        LOG.info("CommandLineRunner : New file '{}' was created.", fileName);
-        FileSupplier.decryptPassword("6bd8937a8789a3e58489c4cfd514b1a7"); //hej123
+        LOG.info("CommandLineRunner: Executing I/O");
+        FileSupplier.hashFileContent("src/main/resources/password/passwords.txt", "data/hashed-passwords.txt");
+        var i = FileSupplier.decryptHash("6bd8937a8789a3e58489c4cfd514b1a7", "data/hashed-passwords.txt"); //hej123
+        System.out.println(i);
     }
 }

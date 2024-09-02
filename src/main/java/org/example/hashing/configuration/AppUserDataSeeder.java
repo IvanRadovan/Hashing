@@ -41,14 +41,14 @@ public class AppUserDataSeeder {
     private void addAppUser(String username, String roleName) {
         String password = integrationProperties.getUserData().getPassword();
         String alias = integrationProperties.getUserData().getAlias();
-        String dirPath = integrationProperties.getUserData().getProfileDir();
-        String relativeDirPath = integrationProperties.getUserData().getRelativeProfileDir();
-        String fileName = integrationProperties.getUserData().getDefaultProfile();
-        String profilePicture = getFile(dirPath, fileName).orElseThrow(NoSuchFieldError::new);
+        String profilePictureFilePath = integrationProperties.getUserData().getDefaultProfile();
+        String defaultProfilePicture = getFile(profilePictureFilePath)
+                .orElseThrow(NoSuchFieldError::new)
+                .toFile()
+                .getName();
 
         List<Role> roles = new ArrayList<>();
-        Role role = roleRepository
-                .findByName(roleName)
+        Role role = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new NoSuchElementException("Role does not exist"));
         roles.add(role);
 
@@ -59,7 +59,7 @@ public class AppUserDataSeeder {
                 .password(hash)
                 .roles(roles)
                 .alias(alias)
-                .profilePicture(relativeDirPath.concat(profilePicture))
+                .profilePicture(defaultProfilePicture)
                 .enabled(true)
                 .build();
         appUserRepository.save(appUser);

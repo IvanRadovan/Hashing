@@ -11,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Files;
-import java.security.Principal;
-
 
 @Controller
 public class HomeController {
@@ -102,7 +99,7 @@ public class HomeController {
             model.addAttribute("blank", integrationProperties.getUserData().getBlankProfile());
         }
 
-        model.addAttribute("password",   FileSupplier.decryptPassword(input));
+        model.addAttribute("password",   FileSupplier.decryptHash(input, "password/passwords.txt"));
 
         return "decrypt.html";
     }
