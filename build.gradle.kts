@@ -30,15 +30,15 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("com.github.javafaker:javafaker:1.0.2") { exclude ("org.yaml") }
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+    implementation("com.github.javafaker:javafaker:1.0.2") { exclude ("org.yaml") }
     implementation("com.google.guava:guava:32.1.3-jre")
 
     compileOnly("org.projectlombok:lombok")
