@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.example.hashing.utility.FileSupplier.getFile;
-
 // TODO: Try to improve this class
 @Service
 public class AppUserDataSeeder {
@@ -45,7 +43,7 @@ public class AppUserDataSeeder {
 
         List<Role> roles = new ArrayList<>();
         Role role = roleRepository.findByName(roleName)
-                .orElseThrow(() -> new NoSuchElementException("Role does not exist"));
+                .orElseThrow(() -> new NoSuchElementException("Role '%s' not found".formatted(roleName)));
         roles.add(role);
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

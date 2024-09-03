@@ -57,10 +57,10 @@ public class WebSecurityConfig {
 //                .formLogin(form -> form.loginPage("/login")
 //                        .defaultSuccessUrl("/")
 //                        .permitAll())
-                .oauth2Login(oAuth2LoginConfigurer -> {
-                    oAuth2LoginConfigurer.loginPage("/login");
-                    oAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(gitHubOAuth2UserService));
-                })
+//                .oauth2Login(oAuth2LoginConfigurer -> {
+//                    oAuth2LoginConfigurer.loginPage("/login");
+//                    oAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(gitHubOAuth2UserService));
+//                })
 //                .logout(logout -> logout
 //                        .logoutUrl("/logout")
 //                        .logoutSuccessUrl("/")

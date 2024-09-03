@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -41,27 +44,26 @@ public class FileSupplier {
         }
     }
 
-//    public static Optional<Path> getResourceFile(String filePath) {
-//        String dirPath = resolveFilePath(filePath).getParent().toString();
-//        String fileName = resolveFilePath(filePath).getFileName().toString();
-//
-//        URL resource = FileSupplier.class.getClassLoader().getResource(dirPath);
-//
-//        if (resource == null) {
-//            LOG.error("Directory not found for path '{}'.", filePath);
-//            return Optional.empty();
-//        }
-//
-//        try (var stream = list(Paths.get(resource.toURI()))) {
-//            return stream.filter(path -> !isDirectory(path))
-//                    .filter(path -> path.getFileName().toString().equals(fileName))
-//                    .findFirst();
-//        } catch (IOException | URISyntaxException e) {
-//            LOG.error("Error while accessing the resource file '{}': {}.", filePath, e.getMessage());
-//            return Optional.empty();
-//        }
-//    }
+    public static Optional<Path> getResourceFile(String filePath) {
+        String dirPath = resolveFilePath(filePath).getParent().toString();
+        String fileName = resolveFilePath(filePath).getFileName().toString();
 
+        URL resource = FileSupplier.class.getClassLoader().getResource(dirPath);
+
+        if (resource == null) {
+            LOG.error("Directory not found for path '{}'.", dirPath);
+            return Optional.empty();
+        }
+
+        try (var stream = list(Paths.get(resource.toURI()))) {
+            return stream.filter(path -> !isDirectory(path))
+                    .filter(path -> path.getFileName().toString().equals(fileName))
+                    .findFirst();
+        } catch (IOException | URISyntaxException e) {
+            LOG.error("Error while accessing the resource file '{}'.", filePath);
+            return Optional.empty();
+        }
+    }
 
     public static List<String> readFile(String filePath) {
         var path = getFile(filePath);
@@ -75,16 +77,27 @@ public class FileSupplier {
             return reader.lines().toList();
         } catch (IOException e) {
             LOG.error("Error while reading from file '{}': {}.", path.get(), e.getMessage());
+            return Collections.emptyList();
         }
-        return Collections.emptyList();
     }
 
-    public static Optional<Path> writeFile(String fileName, List<String> lines) {
+    public static Optional<Path> writeFile(String fileName, List<String> content) {
         Path filePath = resolveFilePath(fileName);
+        Path dirPath = filePath.getParent();
+
+       if (!Files.exists(dirPath)) {
+           try {
+               Files.createDirectories(dirPath);
+               LOG.info("Successfully created parent directory '{}'.", dirPath);
+           } catch (IOException e) {
+               LOG.error("Error while creating parent directory '{}'.", dirPath);
+               return Optional.empty();
+           }
+       }
 
         try (var writer = newBufferedWriter(filePath)) {
-            String content = lines.stream().collect(Collectors.joining(System.lineSeparator()));
-            writer.write(content);
+            String lines = content.stream().collect(Collectors.joining(System.lineSeparator()));
+            writer.write(lines);
             LOG.info("Successfully wrote to temporary file '{}'.", filePath.toFile().getName());
             return Optional.of(filePath);
         } catch (IOException e) {
@@ -93,14 +106,12 @@ public class FileSupplier {
         }
     }
 
-
-
-
     public static Optional<Path> hashFileContent(String sourceFilePath, String destinationFilePath) {
         var content = readFile(sourceFilePath)
                 .stream()
                 .map(password -> new HashPassword(password).toString())
                 .toList();
+
         return writeFile(destinationFilePath, content);
     }
 
