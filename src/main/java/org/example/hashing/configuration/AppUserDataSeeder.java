@@ -1,9 +1,12 @@
 package org.example.hashing.configuration;
 
+import org.example.hashing.LoadUserApplication;
 import org.example.hashing.model.AppUser;
 import org.example.hashing.model.Role;
 import org.example.hashing.repository.AppUserRepository;
 import org.example.hashing.repository.RoleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class AppUserDataSeeder {
 
     @Autowired
     IntegrationProperties integrationProperties;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AppUserDataSeeder.class);
 
     public void seedAppUser() {
         String role = integrationProperties.getUserData().getRole();
@@ -57,6 +62,7 @@ public class AppUserDataSeeder {
                 .enabled(true)
                 .build();
         appUserRepository.save(appUser);
+        LOG.info("User '{}' seeded successfully.", appUser.getUsername());
     }
 
     private void addRole(String name) {

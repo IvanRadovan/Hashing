@@ -37,6 +37,4 @@ public class GitHubOAuth2User implements OAuth2User {
         return oauth2User.getAttribute("html_url");
     }
 
-
-
 }

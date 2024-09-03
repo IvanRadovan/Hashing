@@ -98,10 +98,10 @@ public class FileSupplier {
         try (var writer = newBufferedWriter(filePath)) {
             String lines = content.stream().collect(Collectors.joining(System.lineSeparator()));
             writer.write(lines);
-            LOG.info("Successfully wrote to temporary file '{}'.", filePath.toFile().getName());
+            LOG.info("Successfully wrote to file '{}'.", filePath.toFile().getName());
             return Optional.of(filePath);
         } catch (IOException e) {
-            LOG.error("Error while writing to temporary file '{}': {}.", filePath.toFile().getName(), e.getMessage());
+            LOG.error("Error while writing to file '{}': {}.", filePath.toFile().getName(), e.getMessage());
             return Optional.empty();
         }
     }

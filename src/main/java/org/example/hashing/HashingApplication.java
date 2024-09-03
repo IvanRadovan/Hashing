@@ -3,6 +3,7 @@ package org.example.hashing;
 import org.example.hashing.utility.FileSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -14,6 +15,12 @@ import java.util.Objects;
 @SpringBootApplication
 @EnableWebSecurity
 public class HashingApplication implements CommandLineRunner {
+
+    @Value("${local_file.passwords}")
+    private String passwords;
+
+    @Value("${local_file.hashed_passwords}")
+    private String hashedPasswords;
 
     private static final Logger LOG = LoggerFactory.getLogger(HashingApplication.class);
 
@@ -35,11 +42,6 @@ public class HashingApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         LOG.info("CommandLineRunner: Executing I/O");
-        FileSupplier.hashFileContent("src/main/resources/password/passwords.txt", "data/hashed-passwords.txt");
-
-
-
-        var i = FileSupplier.decryptHash("6bd8937a8789a3e58489c4cfd514b1a7", "data/hashed-passwords.txt"); //hej123
-        System.out.println(i);
+        FileSupplier.hashFileContent(passwords, hashedPasswords);
     }
 }

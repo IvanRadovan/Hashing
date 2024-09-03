@@ -31,7 +31,7 @@ body {
   grid-template-rows: 80% auto; 
 }
 
-section#sidebar {
+nav#sidebar {
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
@@ -48,4 +48,8 @@ section#sidebar {
 
 .sidebar {
   background: linear-gradient(400deg, #ffa24b, #c9c9c9);
+}
+
+.clickable:hover {
+  cursor:pointer;
 }
