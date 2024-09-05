@@ -13,5 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class IntegrationProperties {
 
     private AppUserProperties userData;
+    private Oauth2SecurityProperties oauth2SecurityProperties;
 
 }

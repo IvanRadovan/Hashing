@@ -1,29 +1,19 @@
 package org.example.hashing.security;
 
+import org.example.hashing.configuration.IntegrationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrations;
-import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -31,10 +21,13 @@ import java.util.Map;
 public class WebSecurityConfig {
 
     @Autowired
-    private GitHubOAuth2UserService gitHubOAuth2UserService;
+    private IntegrationProperties integrationProperties;
 
     @Autowired
-    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private GitHubOAuth2UserService gitHubOAuth2UserService;
+
+//    @Autowired
+//    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -75,17 +68,26 @@ public class WebSecurityConfig {
                 .build();
     }
 
-    //    @Bean
-//    public ReactiveClientRegistrationRepository clientRegistrationRepository() {
-//        return new InMemoryReactiveClientRegistrationRepository(this.githubClientRegistration());
-//    }
-//
-//    private ClientRegistration githubClientRegistration() {
-//        return ClientRegistrations.fromIssuerLocation("https://github.com")  // Pre-built GitHub configuration
-//                .clientId(dotenv.get("GITHUB_CLIENT_ID"))  // Fetching from .env
-//                .clientSecret(dotenv.get("GITHUB_CLIENT_SECRET"))  // Fetching from .env
-//                .build();
-//    }
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(this.githubClientRegistration());
+    }
+
+    private ClientRegistration githubClientRegistration() {
+        return ClientRegistration.withRegistrationId("github")
+                .clientId(integrationProperties.getOauth2SecurityProperties().getGitHubClientId())
+                .clientSecret(integrationProperties.getOauth2SecurityProperties().getGitHubClientSecret())
+                .clientAuthenticationMethod(org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("http://localhost:8080/login/oauth2/code/github")
+                .scope("user")
+                .authorizationUri("https://github.com/login/oauth/authorize")
+                .tokenUri("https://github.com/login/oauth/access_token")
+                .userInfoUri("https://api.github.com/user")
+                .userNameAttributeName("id")
+                .clientName("GitHub")
+                .build();
+    }
 
 //    // https://spring.io/guides/tutorials/spring-boot-oauth2
 //    private GrantedAuthoritiesMapper userAuthoritiesMapper() {
