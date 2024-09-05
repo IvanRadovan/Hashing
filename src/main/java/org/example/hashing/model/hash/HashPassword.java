@@ -1,38 +1,29 @@
-package org.example.hashing.model;
+package org.example.hashing.model.hash;
 
 import com.google.common.hash.Hashing;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Comparator;
 
 @Getter
+@Setter
 @NoArgsConstructor
-public class HashPassword implements Comparable<HashPassword> {
+public abstract class HashPassword implements Comparable<HashPassword> {
 
-    private String plain;
-    private String md5;
-    private String sha256;
+    protected String plain;
+    protected String hash;
 
     public HashPassword(String plain) {
         this.plain = plain;
-        this.md5 = encryptToMD5(plain);
-        this.sha256 = encryptToSHA256(plain);
     }
 
-    public HashPassword setHash(String hash) {
-        if (hash.length() == 64) {
-            this.sha256 = hash;
-        } else {
-            this.md5 = hash;
-        }
-        return this;
-    }
-
-    private String encryptToMD5(String plain) {
+    protected String encryptToMD5(String plain) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(plain.getBytes());
@@ -47,7 +38,7 @@ public class HashPassword implements Comparable<HashPassword> {
         }
     }
 
-    private String encryptToSHA256(String plain) {
+    protected String encryptToSHA256(String plain) {
         return Hashing.sha256()
                 .hashString(plain, StandardCharsets.UTF_8)
                 .toString();
@@ -55,13 +46,13 @@ public class HashPassword implements Comparable<HashPassword> {
 
     @Override
     public int compareTo(HashPassword other) {
-        return this.md5.compareTo(other.md5);
+        return Comparator.comparing(HashPassword::getHash)
+                .compare(this, other);
     }
-
 
     @Override
     public String toString() {
-        return "%s:%s:%s".formatted(plain, md5, sha256);
+        return this.hash;
     }
 
 }

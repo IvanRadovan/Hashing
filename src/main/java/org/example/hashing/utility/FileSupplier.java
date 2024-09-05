@@ -1,7 +1,8 @@
 package org.example.hashing.utility;
 
 import lombok.AllArgsConstructor;
-import org.example.hashing.model.HashPassword;
+import org.example.hashing.model.hash.MD5Password;
+import org.example.hashing.model.hash.SHA256Password;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,24 +107,43 @@ public class FileSupplier {
         }
     }
 
-    public static Optional<Path> hashFileContent(String sourceFilePath, String destinationFilePath) {
-        var content = readFile(sourceFilePath)
-                .stream()
-                .map(password -> new HashPassword(password).toString())
-                .toList();
-
-        return writeFile(destinationFilePath, content);
-    }
-
-    public static String decryptHash(String hash, String keyFilePath) {
-        var lines = readFile(keyFilePath)
-                .stream()
-                .map(line -> new HashPassword(line.substring(0, line.indexOf(":"))))
-                .sorted()
-                .toList();
-
-        var index = Collections.binarySearch(lines, new HashPassword().setHash(hash));
-        return (index < 0) ? "No Match Found" : lines.get(index).getPlain();
-    }
+//    public static Optional<Path> hashFileContent(String sourceFilePath, String destinationFilePath) {
+//        var content = readFile(sourceFilePath)
+//                .stream()
+//                .map(password -> new StringBuilder(password)
+//                        .append(":")
+//                        .append(new MD5Password(password))
+//                        .append(":")
+//                        .append(new SHA256Password(password))
+//                        .toString())
+//                .toList();
+//
+//        return writeFile(destinationFilePath, content);
+//    }
+//
+//    public static String decryptHash(String hash, String keyFilePath) {
+//
+//        if (hash.length() == 64) {
+//            var lines = readFile(keyFilePath)
+//                    .stream()
+//                    .map(line -> new SHA256Password(line.substring(0, line.indexOf(":"))))
+//                    .sorted()
+//                    .toList();
+//            var index = Collections.binarySearch(lines, new SHA256Password().setHash(hash));
+//            return (index < 0) ? "No Match Found" : lines.get(index).getPlain();
+//
+//        } else if (hash.length() == 32) {
+//            var lines = readFile(keyFilePath)
+//                    .stream()
+//                    .map(line -> new MD5Password(line.substring(0, line.indexOf(":"))))
+//                    .sorted()
+//                    .toList();
+//
+//            var index = Collections.binarySearch(lines, new MD5Password().setHash(hash));
+//            return (index < 0) ? "No Match Found" : lines.get(index).getPlain();
+//        } else {
+//            return "Unrecognized hash";
+//        }
+//    }
 
 }

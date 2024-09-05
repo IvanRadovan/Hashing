@@ -1,6 +1,6 @@
 package org.example.hashing;
 
-import org.example.hashing.utility.FileSupplier;
+import org.example.hashing.utility.HashGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +42,6 @@ public class HashingApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         LOG.info("CommandLineRunner: Executing I/O");
-        FileSupplier.hashFileContent(passwords, hashedPasswords);
+        HashGenerator.hashFileContent(passwords, hashedPasswords);
     }
 }

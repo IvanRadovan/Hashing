@@ -14,5 +14,4 @@ public class GitHubOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User user =  super.loadUser(userRequest);
         return new GitHubOAuth2User(user);
     }
-
 }

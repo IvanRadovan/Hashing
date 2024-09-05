@@ -1,6 +1,5 @@
 package org.example.hashing.security;
 
-import com.github.javafaker.App;
 import org.example.hashing.model.AppUser;
 import org.example.hashing.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
