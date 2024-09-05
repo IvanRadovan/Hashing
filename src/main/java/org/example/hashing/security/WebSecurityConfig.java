@@ -52,7 +52,7 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/", "/login", "/hash", "/decrypt").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/templates/**").permitAll()
+                        .requestMatchers("/css/**", "/javascript/**", "/images/**", "/templates/**").permitAll()
                         .anyRequest().authenticated())
 //                .formLogin(form -> form.loginPage("/login")
 //                        .defaultSuccessUrl("/")
