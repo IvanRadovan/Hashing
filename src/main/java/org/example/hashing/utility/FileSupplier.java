@@ -121,7 +121,8 @@ public class FileSupplier {
                 .map(line -> new HashPassword(line.substring(0, line.indexOf(":"))))
                 .sorted()
                 .toList();
-        var index = Collections.binarySearch(lines, new HashPassword().setMD5(hash));
+
+        var index = Collections.binarySearch(lines, new HashPassword().setHash(hash));
         return (index < 0) ? "No Match Found" : lines.get(index).getPlain();
     }
 

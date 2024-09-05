@@ -23,8 +23,12 @@ public class HashPassword implements Comparable<HashPassword> {
         this.sha256 = encryptToSHA256(plain);
     }
 
-    public HashPassword setMD5(String hash) {
-        this.md5 = hash;
+    public HashPassword setHash(String hash) {
+        if (hash.length() == 64) {
+            this.sha256 = hash;
+        } else {
+            this.md5 = hash;
+        }
         return this;
     }
 
@@ -54,8 +58,10 @@ public class HashPassword implements Comparable<HashPassword> {
         return this.md5.compareTo(other.md5);
     }
 
+
     @Override
     public String toString() {
-        return "%s:%s".formatted(plain, md5);
+        return "%s:%s:%s".formatted(plain, md5, sha256);
     }
+
 }
