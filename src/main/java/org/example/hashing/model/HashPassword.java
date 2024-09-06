@@ -1,4 +1,4 @@
-package org.example.hashing.model.hash;
+package org.example.hashing.model;
 
 import com.google.common.hash.Hashing;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package org.example.hashing.model.hash;
+package org.example.hashing.model;
 
 import lombok.NoArgsConstructor;
 

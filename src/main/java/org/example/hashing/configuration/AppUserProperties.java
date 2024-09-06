@@ -11,10 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 public class AppUserProperties  {
 
-    private String username;
-    private String password;
-    private String role;
-    private String alias;
     private String defaultProfile;
     private String blankProfile;
 

@@ -1,8 +1,8 @@
 package org.example.hashing.utility;
 
-import org.example.hashing.model.hash.HashPassword;
-import org.example.hashing.model.hash.MD5Password;
-import org.example.hashing.model.hash.SHA256Password;
+import org.example.hashing.model.HashPassword;
+import org.example.hashing.model.MD5Password;
+import org.example.hashing.model.SHA256Password;
 
 import java.nio.file.Path;
 import java.util.Collections;

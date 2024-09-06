@@ -1,7 +1,7 @@
 package org.example.hashing.controller;
 
-import org.example.hashing.model.hash.MD5Password;
-import org.example.hashing.model.hash.SHA256Password;
+import org.example.hashing.model.MD5Password;
+import org.example.hashing.model.SHA256Password;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
