@@ -8,19 +8,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -97,18 +90,18 @@ public class WebSecurityConfig {
     }
 
 //    // https://spring.io/guides/tutorials/spring-boot-oauth2
-    private GrantedAuthoritiesMapper userAuthoritiesMapper() {
-        return authorities -> {
-            List<SimpleGrantedAuthority> mappedAuthorities = new ArrayList<>();
-            authorities.forEach(authority -> {
-                if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
-                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-                    if (userAttributes.get("login").equals("IvanRadovan"))
-                        mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-                }
-            });
-            return mappedAuthorities;
-        };
-    }
+//    private GrantedAuthoritiesMapper userAuthoritiesMapper() {
+//        return authorities -> {
+//            List<SimpleGrantedAuthority> mappedAuthorities = new ArrayList<>();
+//            authorities.forEach(authority -> {
+//                if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
+//                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
+//                    if (userAttributes.get("login").equals("IvanRadovan"))
+//                        mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
+//                }
+//            });
+//            return mappedAuthorities;
+//        };
+//    }
 
 }
