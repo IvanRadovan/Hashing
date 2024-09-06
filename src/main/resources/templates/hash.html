@@ -27,10 +27,11 @@
             <span class="dot"></span>
             <span class="dot"></span>
         </div>
-        <h2 class="window-header">Generate your hash here:</h2>
         <div class="content">
             <form id="hashForm" th:action="@{/hash}" method="post">
                 <div class="form-group">
+                    <h2 class="window-header">Hash Generator:</h2>
+                    <hr />
                     <label for="input">Plain String:</label>
                     <input type="text" class="form-control my-3 border border-dark" id="input" th:name="input"  placeholder="Enter a plain string..." pattern="^\S+$" title="No whitespaces allowed!" required>
                 </div>

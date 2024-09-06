@@ -23,10 +23,11 @@
             <span class="dot"></span>
             <span class="dot"></span>
         </div>
-        <h2 class="window-header">Decrypt your hash code here:</h2>
         <div class="content">
             <form id="hashForm" th:action="@{/decrypt}" method="post">
                 <div class="form-group">
+                    <h2 class="window-header">Password Decrypter:</h2>
+                    <hr />
                     <label for="input">Hashed Password:</label>
                     <input type="text" class="form-control my-3 border border-dark" id="input" th:name="input"
                            placeholder="Enter a hash..." pattern="^\S+$" title="No whitespaces allowed!" required>

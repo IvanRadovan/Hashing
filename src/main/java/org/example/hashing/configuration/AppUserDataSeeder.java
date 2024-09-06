@@ -1,6 +1,5 @@
 package org.example.hashing.configuration;
 
-import org.example.hashing.LoadUserApplication;
 import org.example.hashing.model.AppUser;
 import org.example.hashing.model.Role;
 import org.example.hashing.repository.AppUserRepository;

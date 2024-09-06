@@ -38,7 +38,7 @@
                     Hash
                 </a>
             </li>
-            <li>
+            <li sec:authorize="hasRole('USER')">
                 <a th:href="@{/decrypt}" class="nav-link link-body-emphasis">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-fingerprint me-2" viewBox="0 0 16 16">
                         <path d="M8.06 6.5a.5.5 0 0 1 .5.5v.776a11.5 11.5 0 0 1-.552 3.519l-1.331 4.14a.5.5 0 0 1-.952-.305l1.33-4.141a10.5 10.5 0 0 0 .504-3.213V7a.5.5 0 0 1 .5-.5Z"/>
@@ -59,7 +59,7 @@
                     Products
                 </a>
             </li>
-            <li>
+            <li sec:authorize="hasRole('ADMIN')">
                 <a href="#" class="nav-link link-body-emphasis">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle me-2" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
@@ -82,10 +82,10 @@
 <!--                <li><a class="dropdown-item" th:href="@{/login}">Sign in</a></li>-->
             </ul>
             <ul sec:authorize="isAuthenticated()" class="dropdown-menu text-small shadow ms-3">
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Local Settings</a></li>
+                <li><a class="dropdown-item" href="#">Local Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" th:href="${profileUrl}" target="_blank">Profile GitHub</a></li>
+                <li><a class="dropdown-item" th:href="${profileUrl}" target="_blank">GitHub Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" th:href="@{/logout}">Sign out</a></li>
             </ul>

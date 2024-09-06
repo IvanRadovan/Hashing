@@ -68,7 +68,7 @@ nav#sidebar {
   border: 3px solid #363636;
   border-top-left-radius: 5px;
   border-top-right-radius: 6px;
-  width: 60%;
+  width: 55%;
   height: 75%;
 }
 
@@ -97,8 +97,7 @@ form {
 
 .window-header {
   display: inline-flex;
-  text-decoration-line: underline;
-  margin: 50px 0 30px 100px;
+  margin-top: 50px;
 }
 
 label {
@@ -118,10 +117,12 @@ label {
   position: fixed;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 250px;
   height: 100px;
   top: -100px;
   right: 35px;
-  padding: 25px 35px;
+  padding: 20px 30px;
   border-radius: 5px;
   opacity: 0;
   transition: all 0.8s ease;
@@ -130,10 +131,9 @@ label {
 }
 
 .copy-message p {
-  font-family: 'Nunito Sans', 'Karla', sans-serif;
   text-align: center;
-  margin-top: 12px;
-  color: #000000;
+  margin: 0;
+  color: black;
 }
 
 .copy-message.show {

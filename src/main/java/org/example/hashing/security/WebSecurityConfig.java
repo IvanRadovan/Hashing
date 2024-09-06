@@ -26,9 +26,6 @@ public class WebSecurityConfig {
     @Autowired
     private GitHubOAuth2UserService gitHubOAuth2UserService;
 
-//    @Autowired
-//    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
     @Bean
     public UserDetailsService userDetailsService() {
         return new AppUserDetailsService();
@@ -51,16 +48,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/", "/login", "/hash", "/decrypt").permitAll()
+                        .requestMatchers("/", "/login", "/hash").permitAll()
                         .requestMatchers("/css/**", "/javascript/**", "/images/**", "/templates/**").permitAll()
                         .anyRequest().authenticated())
-//                .formLogin(form -> form.loginPage("/login")
-//                        .defaultSuccessUrl("/")
-//                        .permitAll())
-//                .oauth2Login(Customizer.withDefaults())
                 .oauth2Login(oAuth2Login -> {
-//                    oAuth2Login.loginPage("/login");
-                    oAuth2Login.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(gitHubOAuth2UserService));
+                    oAuth2Login.userInfoEndpoint(userInfoEndpoint ->
+                            userInfoEndpoint.userService(gitHubOAuth2UserService));
                 })
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
@@ -88,20 +81,4 @@ public class WebSecurityConfig {
                 .clientName("GitHub")
                 .build();
     }
-
-//    // https://spring.io/guides/tutorials/spring-boot-oauth2
-//    private GrantedAuthoritiesMapper userAuthoritiesMapper() {
-//        return authorities -> {
-//            List<SimpleGrantedAuthority> mappedAuthorities = new ArrayList<>();
-//            authorities.forEach(authority -> {
-//                if (authority instanceof OAuth2UserAuthority oauth2UserAuthority) {
-//                    Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
-//                    if (userAttributes.get("login").equals("IvanRadovan"))
-//                        mappedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-//                }
-//            });
-//            return mappedAuthorities;
-//        };
-//    }
-
 }

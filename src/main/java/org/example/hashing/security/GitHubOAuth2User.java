@@ -3,12 +3,12 @@ package org.example.hashing.security;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 @AllArgsConstructor
@@ -24,9 +24,7 @@ public class GitHubOAuth2User implements OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return oauth2User.getAuthorities()
-                .stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+        return Stream.concat(oauth2User.getAuthorities().stream(), additionalAuthorities.stream())
                 .collect(Collectors.toList());
     }
 

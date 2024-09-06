@@ -19,6 +19,9 @@ public class GitHubOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private IntegrationProperties integrationProperties;
+    private static final String USER = "ROLE_USER";
+    private static final String ADMIN = "ROLE_ADMIN";
+    private static final String GITHUB_USERNAME = "login";
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -28,14 +31,14 @@ public class GitHubOAuth2UserService extends DefaultOAuth2UserService {
         Map<String, Object> userAttributes = oauth2User.getAttributes();
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(USER));
 
-        if (users.getAdminOne().equals(userAttributes.get("login"))) {
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        if (users.getAdminOne().equals(userAttributes.get(GITHUB_USERNAME))) {
+            authorities.add(new SimpleGrantedAuthority(ADMIN));
         }
 
-        if (users.getAdminTwo().equals(userAttributes.get("login"))) {
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        if (users.getAdminTwo().equals(userAttributes.get(GITHUB_USERNAME))) {
+            authorities.add(new SimpleGrantedAuthority(ADMIN));
         }
 
         return new GitHubOAuth2User(oauth2User, authorities);
