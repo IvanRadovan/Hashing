@@ -32,7 +32,7 @@
                            placeholder="Enter a hash..." pattern="^\S+$" title="No whitespaces allowed!" required>
                 </div>
                 <div class="form-group mt-4 mb-4">
-                    <button type="submit" class="btn btn-success border border-dark">
+                    <button type="submit" class="btn btn-success border border-dark mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
                             <path d="M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"></path>
@@ -42,8 +42,8 @@
                     </button>
                 </div>
                 <hr/>
-                <div class="form-group">
-                    <label for="plain" class="mb-3">Plain text</label>
+                <div class="form-group mt-4">
+                    <label for="plain" class="mb-3">Plain password:</label>
                     <input type="text" class="form-control border border-dark" id="plain" readonly
                            th:value="${password}">
                 </div>

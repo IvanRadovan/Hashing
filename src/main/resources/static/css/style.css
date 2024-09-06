@@ -42,11 +42,15 @@ nav#sidebar {
   height: 100%;
 }
 
+#features, .window-header, .top {
+  user-select: none;
+}
+
 #features svg {
   opacity: 100%;
 }
 
-.sidebar, .window {
+.sidebar, .window, .copy-message {
   background: linear-gradient(400deg, #ffa24b, #c9c9c9);
 }
 
@@ -106,6 +110,37 @@ label {
   background-color: #ceeeff;
 }
 
-.copy-hash:hover {
-  background-color: #88e4ff;
+.copy-hash svg {
+  pointer-events: none;
+}
+
+.copy-message {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  height: 100px;
+  top: -100px;
+  right: 35px;
+  padding: 25px 35px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: all 0.8s ease;
+  z-index: 1;
+  border: 1px solid #363636;
+}
+
+.copy-message p {
+  font-family: 'Nunito Sans', 'Karla', sans-serif;
+  text-align: center;
+  margin-top: 12px;
+  color: #000000;
+}
+
+.copy-message.show {
+  top: 30px;
+  opacity: 1;
+}
+
+.copy-message:hover {
+  opacity: 0.75;
 }
