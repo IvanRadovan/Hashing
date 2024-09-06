@@ -4,6 +4,7 @@ import org.example.hashing.configuration.IntegrationProperties;
 import org.example.hashing.utility.HashGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ public class DecryptController {
     @Value("${local_file.hashed_passwords}")
     private String hashedPasswords;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public String showForm2(Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
         if (oauth2User != null) {
@@ -40,6 +42,7 @@ public class DecryptController {
         return "decrypt.html";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public String processForm2(@RequestParam("input") String input, Model model, @AuthenticationPrincipal OAuth2User oauth2User) {
         if (oauth2User != null) {

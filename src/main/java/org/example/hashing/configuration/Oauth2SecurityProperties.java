@@ -13,5 +13,7 @@ public class Oauth2SecurityProperties {
 
     private String gitHubClientId;
     private String gitHubClientSecret;
+    private String adminOne;
+    private String adminTwo;
 
 }
